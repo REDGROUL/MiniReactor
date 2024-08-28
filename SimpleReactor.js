@@ -1,21 +1,25 @@
 class SimpleReactor{
-
+    
     constructor(root) {
         this.root = document.getElementById(root);
     } 
 
-    setTemplate(template) {
+    addComponent(component, customRootId = null) {
+
+        document.onreadystatechange = () => {
+            if (document.readyState === "complete") {
+                if(customRootId) {
+                    document.getElementById(customRootId).innerHTML += component;
+                } else {
+                    this.root.innerHTML += component;
+                }
+                setupEventListeners();
+            }
+        };
+       
+    }
+
+    useTemplate(template){
         this.root.innerHTML = template;
-        return true;
-    }
-
-    addToRoot(template) {
-        if (typeof template !== 'function') {
-            this.root.innerHTML += template;
-        }
-    }
-
-    useComponent(component){
-        component(this);
     }
 }
